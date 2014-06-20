@@ -135,6 +135,8 @@ namespace Octokit
             _jsonPipeline = new JsonHttpPipeline();
         }
 
+      
+
         public Task<IResponse<T>> Get<T>(Uri uri, IDictionary<string, string> parameters, string accepts)
         {
             Ensure.ArgumentNotNull(uri, "uri");
@@ -160,7 +162,25 @@ namespace Octokit
         {
             Ensure.ArgumentNotNull(uri, "uri");
 
-            return GetHtml(new Request
+            return GetContent(new Request
+            {
+                Method = HttpMethod.Get,
+                BaseAddress = BaseAddress,
+                Endpoint = uri.ApplyParameters(parameters)
+            }, "application/vnd.github.html");
+        }
+
+        /// <summary>
+        /// Performs an asynchronous HTTP GET request that expects a <seealso cref="IResponse"/> containing raw content.
+        /// </summary>
+        /// <param name="uri">URI endpoint to send request to</param>
+        /// <param name="parameters">Querystring parameters for the request</param>
+        /// <returns><seealso cref="IResponse"/> representing the received HTTP response</returns>
+        public Task<IResponse<string>> GetRaw(Uri uri, IDictionary<string, string> parameters)
+        {
+            Ensure.ArgumentNotNull(uri, "uri");
+
+            return GetContent(new Request
             {
                 Method = HttpMethod.Get,
                 BaseAddress = BaseAddress,
@@ -335,9 +355,9 @@ namespace Octokit
             }
         }
 
-        Task<IResponse<string>> GetHtml(IRequest request)
+        Task<IResponse<string>> GetContent(IRequest request, string acceptHeader = "application/vnd.github.raw")
         {
-            request.Headers.Add("Accept", "application/vnd.github.html");
+            request.Headers.Add("Accept", acceptHeader);
             return RunRequest<string>(request, CancellationToken.None);
         }
 

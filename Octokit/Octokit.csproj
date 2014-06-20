@@ -70,6 +70,7 @@
     <Compile Include="Http\ProductHeaderValue.cs" />
     <Compile Include="Models\Request\OauthLoginRequest.cs" />
     <Compile Include="Models\Request\OauthTokenRequest.cs" />
+    <Compile Include="Models\Response\FileInfo.cs" />
     <Compile Include="Models\Response\GitHubCommit.cs" />
     <Compile Include="Models\Response\CompareResult.cs" />
     <Compile Include="Models\Request\NewCommitComment.cs" />

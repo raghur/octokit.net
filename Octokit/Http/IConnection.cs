@@ -21,6 +21,14 @@ namespace Octokit
         Task<IResponse<string>> GetHtml(Uri uri, IDictionary<string, string> parameters);
 
         /// <summary>
+        /// Performs an asynchronous HTTP GET request that expects a <seealso cref="IResponse"/> containing raw content.
+        /// </summary>
+        /// <param name="uri">URI endpoint to send request to</param>
+        /// <param name="parameters">Querystring parameters for the request</param>
+        /// <returns><seealso cref="IResponse"/> representing the received HTTP response</returns>
+        Task<IResponse<string>> GetRaw(Uri uri, IDictionary<string, string> parameters);
+
+        /// <summary>
         /// Performs an asynchronous HTTP GET request.
         /// Attempts to map the response to an object of type <typeparamref name="T"/>
         /// </summary>
@@ -150,5 +158,7 @@ namespace Octokit
         /// the default <see cref="InMemoryCredentialStore"/> with just these credentials.
         /// </remarks>
         Credentials Credentials { get; set; }
+
+        
     }
 }

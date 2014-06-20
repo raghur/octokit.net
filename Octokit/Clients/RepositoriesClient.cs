@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.ObjectModel;
+using Octokit.Response;
 
 namespace Octokit
 {
@@ -222,6 +223,50 @@ namespace Octokit
             var endpoint = "repos/{0}/{1}/readme".FormatUri(owner, name);
             var readmeInfo = await ApiConnection.Get<ReadmeResponse>(endpoint, null).ConfigureAwait(false);
             return new Readme(readmeInfo, ApiConnection);
+        }
+
+        /// <summary>
+        /// Gets the file contents from a repository given a path.
+        /// </summary>
+        /// <remarks>
+        /// See the <a href="http://developer.github.com/v3/repos/contents/#get-the-readme">API documentation</a> for more information.
+        /// </remarks>
+        /// <param name="owner">The owner of the repository</param>
+        /// <param name="name">The name of the repository</param>
+        /// <param name="path">File path inside the repo</param>
+        /// <param name="commit">Branch name or commit sha</param>
+        /// <exception cref="ApiException">Thrown when a general API error occurs.</exception>
+        /// <returns></returns>
+        public async Task<string> GetFileContent(string owner, string name, string path, string commit)
+        {
+            Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
+            Ensure.ArgumentNotNullOrEmptyString(name, "name");
+            if (string.IsNullOrEmpty(commit))
+            {
+                commit = "master";
+            }
+            var endpoint = "repos/{0}/{1}/contents/{2}".FormatUri(owner, name, path);
+            var file =await ApiConnection.GetRaw(endpoint, new Dictionary<string, string>()
+            {
+                {"ref", commit}
+            });
+            return file;
+        }
+
+        public async Task<IEnumerable<FileInfo>> GetDirectory(string owner, string name, string path, string commit)
+        {
+            Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
+            Ensure.ArgumentNotNullOrEmptyString(name, "name");
+            if (string.IsNullOrEmpty(commit))
+            {
+                commit = "master";
+            }
+            var endpoint = "repos/{0}/{1}/contents/{2}".FormatUri(owner, name, path);
+            var contents = await ApiConnection.Get<IEnumerable<FileInfo>>(endpoint, new Dictionary<string, string>()
+            {
+                {"ref", commit}
+            });
+            return contents;
         }
 
         /// <summary>

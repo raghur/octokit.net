@@ -92,6 +92,21 @@ namespace Octokit
         }
 
         /// <summary>
+        /// Gets the raw content of the API resource at the specified URI.
+        /// </summary>
+        /// <param name="uri">URI of the API resource to get</param>
+        /// <param name="parameters">Parameters to add to the API request</param>
+        /// <returns>The API resource's raw content.</returns>
+        /// <exception cref="ApiException">Thrown when an API error occurs.</exception>
+        public async Task<string> GetRaw(Uri uri, IDictionary<string, string> parameters)
+        {
+            Ensure.ArgumentNotNull(uri, "uri");
+
+            var response = await Connection.GetRaw(uri, parameters).ConfigureAwait(false);
+            return response.Body;
+        }
+
+        /// <summary>
         /// Gets all API resources in the list at the specified URI.
         /// </summary>
         /// <typeparam name="T">Type of the API resource in the list.</typeparam>

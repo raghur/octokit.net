@@ -3,6 +3,7 @@ using System.Collections.Generic;
 #endif
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Octokit.Response;
 
 namespace Octokit
 {
@@ -129,6 +130,22 @@ namespace Octokit
         /// <exception cref="ApiException">Thrown when a general API error occurs.</exception>
         /// <returns></returns>
         Task<Readme> GetReadme(string owner, string name);
+
+        /// <summary>
+        /// Gets the file contents from a repository given a path.
+        /// </summary>
+        /// <remarks>
+        /// See the <a href="http://developer.github.com/v3/repos/contents/#get-the-readme">API documentation</a> for more information.
+        /// </remarks>
+        /// <param name="owner">The owner of the repository</param>
+        /// <param name="name">The name of the repository</param>
+        /// <param name="path">File path inside the repo</param>
+        /// <param name="commit">Branch name or commit sha</param>
+        /// <exception cref="ApiException">Thrown when a general API error occurs.</exception>
+        /// <returns></returns>
+        Task<string> GetFileContent(string owner, string name, string path, string commit);
+
+        Task<IEnumerable<FileInfo>> GetDirectory(string owner, string name, string path, string commit);
 
         /// <summary>
         /// Gets the perferred README's HTML for the specified repository.
