@@ -2,6 +2,7 @@
 #if NET_45
 using System.Collections.Generic;
 #endif
+using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.ObjectModel;
@@ -237,7 +238,7 @@ namespace Octokit
         /// <param name="commit">Branch name or commit sha</param>
         /// <exception cref="ApiException">Thrown when a general API error occurs.</exception>
         /// <returns></returns>
-        public async Task<string> GetFileContent(string owner, string name, string path, string commit)
+        public async Task<string> GetFileContentAsString(string owner, string name, string path, string commit)
         {
             Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
             Ensure.ArgumentNotNullOrEmptyString(name, "name");
@@ -246,7 +247,23 @@ namespace Octokit
                 commit = "master";
             }
             var endpoint = "repos/{0}/{1}/contents/{2}".FormatUri(owner, name, path);
-            var file =await ApiConnection.GetRaw(endpoint, new Dictionary<string, string>()
+            var bytes =await ApiConnection.GetRaw(endpoint, new Dictionary<string, string>()
+            {
+                {"ref", commit}
+            });
+            return Encoding.UTF8.GetString(bytes);
+        }
+
+        public async Task<byte[]> GetFileContent(string owner, string name, string path, string commit)
+        {
+            Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
+            Ensure.ArgumentNotNullOrEmptyString(name, "name");
+            if (string.IsNullOrEmpty(commit))
+            {
+                commit = "master";
+            }
+            var endpoint = "repos/{0}/{1}/contents/{2}".FormatUri(owner, name, path);
+            var file = await ApiConnection.GetRaw(endpoint, new Dictionary<string, string>()
             {
                 {"ref", commit}
             });
@@ -266,6 +283,20 @@ namespace Octokit
             {
                 {"ref", commit}
             });
+            return contents;
+        }
+
+        public async Task<byte[]> DownloadArchive(string owner, string name, string commit)
+        {
+            Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
+            Ensure.ArgumentNotNullOrEmptyString(name, "name");
+            if (string.IsNullOrEmpty(commit))
+            {
+                commit = "master";
+            }
+
+            var endpoint = "repos/{0}/{1}/zipball/{2}".FormatUri(owner, name, commit);
+            var contents = await ApiConnection.Get<byte[]>(endpoint, new Dictionary<string, string>());
             return contents;
         }
 

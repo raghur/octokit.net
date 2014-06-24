@@ -135,7 +135,6 @@ namespace Octokit
             _jsonPipeline = new JsonHttpPipeline();
         }
 
-      
 
         public Task<IResponse<T>> Get<T>(Uri uri, IDictionary<string, string> parameters, string accepts)
         {
@@ -162,7 +161,7 @@ namespace Octokit
         {
             Ensure.ArgumentNotNull(uri, "uri");
 
-            return GetContent(new Request
+            return GetContent<string>(new Request
             {
                 Method = HttpMethod.Get,
                 BaseAddress = BaseAddress,
@@ -176,11 +175,11 @@ namespace Octokit
         /// <param name="uri">URI endpoint to send request to</param>
         /// <param name="parameters">Querystring parameters for the request</param>
         /// <returns><seealso cref="IResponse"/> representing the received HTTP response</returns>
-        public Task<IResponse<string>> GetRaw(Uri uri, IDictionary<string, string> parameters)
+        public Task<IResponse<byte[]>> GetRaw(Uri uri, IDictionary<string, string> parameters)
         {
             Ensure.ArgumentNotNull(uri, "uri");
 
-            return GetContent(new Request
+            return GetContent<byte[]>(new Request
             {
                 Method = HttpMethod.Get,
                 BaseAddress = BaseAddress,
@@ -355,10 +354,10 @@ namespace Octokit
             }
         }
 
-        Task<IResponse<string>> GetContent(IRequest request, string acceptHeader = "application/vnd.github.raw")
+        Task<IResponse<T>> GetContent<T>(IRequest request, string acceptHeader = "application/vnd.github.raw")
         {
             request.Headers.Add("Accept", acceptHeader);
-            return RunRequest<string>(request, CancellationToken.None);
+            return RunRequest<T>(request, CancellationToken.None);
         }
 
         async Task<IResponse<T>> Run<T>(IRequest request, CancellationToken cancellationToken)

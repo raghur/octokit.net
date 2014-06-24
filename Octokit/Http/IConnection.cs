@@ -26,7 +26,7 @@ namespace Octokit
         /// <param name="uri">URI endpoint to send request to</param>
         /// <param name="parameters">Querystring parameters for the request</param>
         /// <returns><seealso cref="IResponse"/> representing the received HTTP response</returns>
-        Task<IResponse<string>> GetRaw(Uri uri, IDictionary<string, string> parameters);
+        Task<IResponse<byte[]>> GetRaw(Uri uri, IDictionary<string, string> parameters);
 
         /// <summary>
         /// Performs an asynchronous HTTP GET request.

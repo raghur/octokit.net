@@ -143,9 +143,13 @@ namespace Octokit
         /// <param name="commit">Branch name or commit sha</param>
         /// <exception cref="ApiException">Thrown when a general API error occurs.</exception>
         /// <returns></returns>
-        Task<string> GetFileContent(string owner, string name, string path, string commit);
+        Task<string> GetFileContentAsString(string owner, string name, string path, string commit);
+
+        Task<byte[]> GetFileContent(string owner, string name, string path, string commit);
 
         Task<IEnumerable<FileInfo>> GetDirectory(string owner, string name, string path, string commit);
+
+        Task<byte[]> DownloadArchive(string owner, string name, string commit);
 
         /// <summary>
         /// Gets the perferred README's HTML for the specified repository.
