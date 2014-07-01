@@ -49,6 +49,7 @@ namespace Octokit.Internal
                 BaseAddress = request.BaseAddress,
                 Timeout = request.Timeout
             };
+            ConfigureHttpClient(http);
             using (var requestMessage = BuildRequestMessage(request))
             {
                 // Make the request
@@ -58,6 +59,10 @@ namespace Octokit.Internal
             }
         }
 
+        protected virtual void ConfigureHttpClient(HttpClient client)
+        {
+            
+        }
         protected async virtual Task<IResponse<T>> BuildResponse<T>(HttpResponseMessage responseMessage)
         {
             Ensure.ArgumentNotNull(responseMessage, "responseMessage");
