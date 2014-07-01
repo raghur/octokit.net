@@ -2,11 +2,13 @@
 #if NET_45
 using System.Collections.Generic;
 #endif
+using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.ObjectModel;
-using Octokit.Response;
+using FileInfo = Octokit.Response.FileInfo;
 
 namespace Octokit
 {
@@ -286,7 +288,7 @@ namespace Octokit
             return contents;
         }
 
-        public async Task<byte[]> DownloadArchive(string owner, string name, string commit)
+        public async Task<Stream> DownloadArchive(string owner, string name, string commit)
         {
             Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
             Ensure.ArgumentNotNullOrEmptyString(name, "name");
@@ -294,10 +296,12 @@ namespace Octokit
             {
                 commit = "master";
             }
-
+            var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(90));
+            var token = cancellationTokenSource.Token;
             var endpoint = "repos/{0}/{1}/zipball/{2}".FormatUri(owner, name, commit);
-            var contents = await ApiConnection.Get<byte[]>(endpoint, new Dictionary<string, string>());
-            return contents;
+            //var contents = await ApiConnection.Get<byte[]>(endpoint, new Dictionary<string, string>());
+            var contents = await ApiConnection.Connection.Get<Stream>(endpoint, new Dictionary<string, string>(), "application/vnd.github.raw", token);
+            return contents.BodyAsObject;
         }
 
         /// <summary>
