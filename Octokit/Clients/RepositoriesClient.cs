@@ -304,6 +304,19 @@ namespace Octokit
             return contents.BodyAsObject;
         }
 
+        public async Task<IDictionary<string, string>> DownloadArchiveHeaders(string owner, string name, string commit)
+        {
+            Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
+            Ensure.ArgumentNotNullOrEmptyString(name, "name");
+            if (string.IsNullOrEmpty(commit))
+            {
+                commit = "master";
+            }
+            var endpoint = "repos/{0}/{1}/zipball/{2}".FormatUri(owner, name, commit);
+            var headers = await ApiConnection.Connection.Head(endpoint, new Dictionary<string, string>(), "application/vnd.github.raw");
+            return headers.Headers;
+        }
+
         /// <summary>
         /// Gets the perferred README's HTML for the specified repository.
         /// </summary>

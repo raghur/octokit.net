@@ -28,7 +28,9 @@ namespace Octokit
         /// <returns><seealso cref="IResponse"/> representing the received HTTP response</returns>
         Task<IResponse<byte[]>> GetRaw(Uri uri, IDictionary<string, string> parameters);
 
-        /// <summary>
+        Task<IResponse<IDictionary<string, string>>> Head(Uri uri, IDictionary<string, string> parameters, string accepts);
+        
+            /// <summary>
         /// Performs an asynchronous HTTP GET request.
         /// Attempts to map the response to an object of type <typeparamref name="T"/>
         /// </summary>

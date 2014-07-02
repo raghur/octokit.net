@@ -294,5 +294,7 @@ namespace Octokit
         /// <param name="update">New values to update the repository with</param>
         /// <returns>The updated <see cref="T:Octokit.Repository"/></returns>
         Task<Repository> Edit(string owner, string name, RepositoryUpdate update);
+
+        Task<IDictionary<string, string>> DownloadArchiveHeaders(string owner, string name, string commit);
     }
 }

@@ -135,6 +135,12 @@ namespace Octokit
             _jsonPipeline = new JsonHttpPipeline();
         }
 
+        public Task<IResponse<IDictionary<string, string>>> Head(Uri uri, IDictionary<string, string> parameters, string accepts)
+        {
+            Ensure.ArgumentNotNull(uri, "uri");
+
+            return SendData<IDictionary<string, string>>(uri.ApplyParameters(parameters), HttpMethod.Head, null, accepts, null, CancellationToken.None);
+        }
 
         public Task<IResponse<T>> Get<T>(Uri uri, IDictionary<string, string> parameters, string accepts)
         {
