@@ -288,7 +288,7 @@ namespace Octokit
             return contents;
         }
 
-        public async Task<Stream> DownloadArchive(string owner, string name, string commit)
+        public async Task<Stream> DownloadArchive(string owner, string name, string commit, CancellationToken token)
         {
             Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
             Ensure.ArgumentNotNullOrEmptyString(name, "name");
@@ -296,8 +296,6 @@ namespace Octokit
             {
                 commit = "master";
             }
-            var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(90));
-            var token = cancellationTokenSource.Token;
             var endpoint = "repos/{0}/{1}/zipball/{2}".FormatUri(owner, name, commit);
             //var contents = await ApiConnection.Get<byte[]>(endpoint, new Dictionary<string, string>());
             var contents = await ApiConnection.Connection.Get<Stream>(endpoint, new Dictionary<string, string>(), "application/vnd.github.raw", token);

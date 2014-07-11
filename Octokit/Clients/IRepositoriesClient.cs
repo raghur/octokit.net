@@ -3,6 +3,7 @@ using System.Collections.Generic;
 #endif
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using FileInfo = Octokit.Response.FileInfo;
 
@@ -150,7 +151,7 @@ namespace Octokit
 
         Task<IEnumerable<FileInfo>> GetDirectory(string owner, string name, string path, string commit);
 
-        Task<Stream> DownloadArchive(string owner, string name, string commit);
+        Task<Stream> DownloadArchive(string owner, string name, string commit, CancellationToken token);
 
         /// <summary>
         /// Gets the perferred README's HTML for the specified repository.
