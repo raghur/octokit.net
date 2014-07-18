@@ -49,7 +49,7 @@ namespace Octokit.Internal
                 BaseAddress = request.BaseAddress,
                 Timeout = request.Timeout
             };
-            ConfigureHttpClient(http);
+            ConfigureRequest(http, request);
             using (var requestMessage = BuildRequestMessage(request))
             {
                 // Make the request
@@ -59,7 +59,7 @@ namespace Octokit.Internal
             }
         }
 
-        protected virtual void ConfigureHttpClient(HttpClient client)
+        protected virtual void ConfigureRequest(HttpClient client, IRequest request)
         {
             
         }
