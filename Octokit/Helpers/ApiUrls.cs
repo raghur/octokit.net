@@ -5,7 +5,7 @@ namespace Octokit
     /// <summary>
     /// Class for retrieving GitHub ApI URLs
     /// </summary>
-    public static class ApiUrls
+    public static partial class ApiUrls
     {
         static readonly Uri _currentUserRepositoriesUrl = new Uri("user/repos", UriKind.Relative);
         static readonly Uri _currentUserOrganizationsUrl = new Uri("user/orgs", UriKind.Relative);
@@ -134,26 +134,13 @@ namespace Octokit
         }
 
         /// <summary>
-        /// Returns the <see cref="Uri"/> that returns a single asset for the specified release for the specified repository.
-        /// </summary>
-        /// <param name="owner">The owner of the repository</param>
-        /// <param name="name">The name of the repository</param>
-        /// <param name="releaseId">The id of the release</param>
-        /// <param name="assetId">The id of the release asset</param>
-        /// <returns></returns>
-        public static Uri ReleaseAssets(string owner, string name, int releaseId, int assetId)
-        {
-            return "repos/{0}/{1}/releases/{2}/assets/{3}".FormatUri(owner, name, releaseId, assetId);
-        }
-
-        /// <summary>
-        /// Returns the <see cref="Uri"/> that returns all the assets for the specified repository.
+        /// Returns the <see cref="Uri"/> that returns the assets specified by the asset id.
         /// </summary>
         /// <param name="owner">The owner of the repository</param>
         /// <param name="name">The name of the repository</param>
         /// <param name="id">The id of the release asset</param>
         /// <returns></returns>
-        public static Uri Assets(string owner, string name, int id)
+        public static Uri Asset(string owner, string name, int id)
         {
             return "repos/{0}/{1}/releases/assets/{2}".FormatUri(owner, name, id);
         }
@@ -876,6 +863,41 @@ namespace Octokit
         }
 
         /// <summary>
+        /// Returns the <see cref="Uri"/> for the comments of a specified pull request review.
+        /// </summary>
+        /// <param name="owner">The owner of the repository</param>
+        /// <param name="name">The name of the repository</param>
+        /// <param name="number">The pull request number</param>
+        /// <returns>The <see cref="Uri"/></returns>
+        public static Uri PullRequestReviewComments(string owner, string name, int number)
+        {
+            return "repos/{0}/{1}/pulls/{2}/comments".FormatUri(owner, name, number);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="Uri"/> for the specified pull request review comment.
+        /// </summary>
+        /// <param name="owner">The owner of the repository</param>
+        /// <param name="name">The name of the repository</param>
+        /// <param name="number">The comment number</param>
+        /// <returns>The <see cref="Uri"/></returns>
+        public static Uri PullRequestReviewComment(string owner, string name, int number)
+        {
+            return "repos/{0}/{1}/pulls/comments/{2}".FormatUri(owner, name, number);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="Uri"/> for the pull request review comments on a specified repository.
+        /// </summary>
+        /// <param name="owner">The owner of the repository</param>
+        /// <param name="name">The name of the repository</param>
+        /// <returns>The <see cref="Uri"/></returns>
+        public static Uri PullRequestReviewCommentsRepository(string owner, string name)
+        {
+            return "repos/{0}/{1}/pulls/comments".FormatUri(owner, name);
+        }
+
+        /// <summary>
         /// Returns the <see cref="Uri"/> for a specifc blob.
         /// </summary>
         /// <param name="owner">The owner of the blob</param>
@@ -1070,6 +1092,29 @@ namespace Octokit
         }
 
         /// <summary>
+        /// Returns the <see cref="Uri"/> for repository commits.
+        /// </summary>
+        /// <param name="owner">The owner of the repository</param>
+        /// <param name="name">The name of the repository</param>
+        /// <param name="reference">The commit reference (SHA)</param>
+        /// <returns></returns>
+        public static Uri RepositoryCommit(string owner, string name, string reference)
+        {
+            return "repos/{0}/{1}/commits/{2}".FormatUri(owner, name, reference);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="Uri"/> for repository commits.
+        /// </summary>
+        /// <param name="owner">The owner of the repository</param>
+        /// <param name="name">The name of the repository</param>
+        /// <returns></returns>
+        public static Uri RepositoryCommits(string owner, string name)
+        {
+            return "repos/{0}/{1}/commits".FormatUri(owner, name);
+        }
+
+        /// <summary>
         /// Returns the <see cref="Uri"/> for comparing two commits.
         /// </summary>
         /// <param name="owner">The owner of the repository</param>
@@ -1110,6 +1155,29 @@ namespace Octokit
         public static Uri Repository(string owner, string name)
         {
             return "repos/{0}/{1}".FormatUri(owner, name);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="Uri"/> for a deploy key for a repository
+        /// </summary>
+        /// <param name="owner">The owner of the repository</param>
+        /// <param name="name">The name of the repository</param>
+        /// <param name="number">The id of the deploy key of the repository</param>
+        /// <returns></returns>
+        public static Uri RepositoryDeployKey(string owner, string name, int number)
+        {
+            return "repos/{0}/{1}/keys/{2}".FormatUri(owner, name, number);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="Uri"/> for deploy keys for a repository.
+        /// </summary>
+        /// <param name="owner">The owner of the repository</param>
+        /// <param name="name">The name of the repository</param>
+        /// <returns></returns>
+        public static Uri RepositoryDeployKeys(string owner, string name)
+        {
+            return "repos/{0}/{1}/keys".FormatUri(owner, name);
         }
 
         /// <summary>

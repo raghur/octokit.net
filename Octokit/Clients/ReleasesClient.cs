@@ -71,7 +71,7 @@ namespace Octokit
         /// <param name="data">A description of the release to create</param>
         /// <exception cref="ApiException">Thrown when a general API error occurs.</exception>
         /// <returns>The created <see cref="Release"/>.</returns>
-        public Task<Release> CreateRelease(string owner, string name, ReleaseUpdate data)
+        public Task<Release> Create(string owner, string name, ReleaseUpdate data)
         {
             Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
             Ensure.ArgumentNotNullOrEmptyString(name, "repository");
@@ -93,7 +93,7 @@ namespace Octokit
         /// <param name="data">A description of the release to edit</param>
         /// <exception cref="ApiException">Thrown when a general API error occurs.</exception>
         /// <returns>The updated <see cref="Release"/>.</returns>
-        public Task<Release> EditRelease(string owner, string name, int id, ReleaseUpdate data)
+        public Task<Release> Edit(string owner, string name, int id, ReleaseUpdate data)
         {
             Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
             Ensure.ArgumentNotNullOrEmptyString(name, "name");
@@ -114,7 +114,7 @@ namespace Octokit
         /// <param name="id">The id of the release to delete</param>
         /// <exception cref="ApiException">Thrown when a general API error occurs.</exception>
         /// <returns></returns>
-        public Task DeleteRelease(string owner, string name, int id)
+        public Task Delete(string owner, string name, int id)
         {
             Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
             Ensure.ArgumentNotNullOrEmptyString(name, "name");
@@ -174,15 +174,14 @@ namespace Octokit
         /// </remarks>
         /// <param name="owner">The repository's owner</param>
         /// <param name="name">The repository's name</param>
-        /// <param name="releaseId">The id of the <see cref="Release"/></param>
         /// <param name="assetId">The id of the <see cref="ReleaseAsset"/></param>
         /// <returns>The <see cref="ReleaseAsset"/> specified by the asset id.</returns>
-        public Task<ReleaseAsset> GetAsset(string owner, string name, int releaseId, int assetId)
+        public Task<ReleaseAsset> GetAsset(string owner, string name, int assetId)
         {
             Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
             Ensure.ArgumentNotNullOrEmptyString(name, "name");
 
-            var endpoint = ApiUrls.ReleaseAssets(owner, name, releaseId, assetId);
+            var endpoint = ApiUrls.Asset(owner, name, assetId);
             return ApiConnection.Get<ReleaseAsset>(endpoint);
         }
 
@@ -194,17 +193,16 @@ namespace Octokit
         /// </remarks>
         /// <param name="owner">The repository's owner</param>
         /// <param name="name">The repository's name</param>
-        /// <param name="releaseId">The id of the <see cref="Release"/></param>
         /// <param name="assetId">The id of the <see cref="ReleaseAsset"/></param>
         /// <param name="data">Description of the asset with its amended data</param>
         /// <returns>The edited <see cref="ReleaseAsset"/>.</returns>
-        public Task<ReleaseAsset> EditAsset(string owner, string name, int releaseId, int assetId, ReleaseAssetUpdate data)
+        public Task<ReleaseAsset> EditAsset(string owner, string name, int assetId, ReleaseAssetUpdate data)
         {
             Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
             Ensure.ArgumentNotNullOrEmptyString(name, "name");
             Ensure.ArgumentNotNull(data, "data");
 
-            var endpoint = ApiUrls.ReleaseAssets(owner, name, releaseId, assetId);
+            var endpoint = ApiUrls.Asset(owner, name, assetId);
             return ApiConnection.Patch<ReleaseAsset>(endpoint, data);
         }
 
@@ -223,7 +221,7 @@ namespace Octokit
             Ensure.ArgumentNotNullOrEmptyString(owner, "owner");
             Ensure.ArgumentNotNullOrEmptyString(name, "name");
 
-            var endpoint = ApiUrls.Assets(owner, name, id);
+            var endpoint = ApiUrls.Asset(owner, name, id);
             return ApiConnection.Delete(endpoint);
         }
     }
